@@ -24,8 +24,11 @@ const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
 
 const postcssNormalize = require('postcss-normalize');
+
+console.log(path.resolve(__dirname, '../dll/vendors.dll.js'));
 
 const appPackageJson = require(paths.appPackageJson);
 
@@ -648,6 +651,18 @@ module.exports = function(webpackEnv) {
           silent: true,
           // The formatter is invoked directly in WebpackDevServerUtils during development
           formatter: isEnvProduction ? typescriptFormatter : undefined,
+        }),
+        new AddAssetHtmlWebpackPlugin({
+          filepath: path.resolve(__dirname, '../dll/vendors.dll.js')
+        }),
+        new AddAssetHtmlWebpackPlugin({
+          filepath: path.resolve(__dirname, '../dll/react.dll.js')
+        }),
+        new webpack.DllReferencePlugin({
+          manifest: require(path.resolve(__dirname, '../dll/vendors.manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+          manifest: require(path.resolve(__dirname, '../dll/react.manifest.json'))
         }),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.

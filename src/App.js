@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import _ from 'lodash'
 function App() {
   return (
     <div className="App">
@@ -17,6 +17,7 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
+          {_.compact(['1', '1'])}
         </a>
       </header>
     </div>
